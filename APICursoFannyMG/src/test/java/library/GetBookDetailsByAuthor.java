@@ -1,5 +1,6 @@
 package library;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.restassured.RestAssured;
@@ -14,10 +15,14 @@ public class GetBookDetailsByAuthor {
 	  RestAssured.baseURI = "http://216.10.245.166";
 	  
 	  //REQUEST
-	  given().queryParam("AuthorName", "Antoine de Saint-Exupéry")
+	  String response = given().queryParam("AuthorName", "Antoine de Saint-Exupéry")
 	  .when().get("Library/GetBook.php")
 	  
 	  //RESPONSE
-	  .then().log().all().statusCode(200);
+	  .then().log().all().statusCode(200) // Assertion restassured
+	  
+	  .extract().asString();
+	  
+	  Assert.assertNotNull(response); // Assertion testng
   }
 }
