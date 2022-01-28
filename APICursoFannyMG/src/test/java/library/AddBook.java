@@ -3,6 +3,7 @@ package library;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import base.Payloads;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 
@@ -17,12 +18,7 @@ public class AddBook {
 	  
 	  // REQUEST
 	  String response = given().header("Content-Type", "application/json")
-	  .body("{\n"
-	  		+ "    \"name\":\"El principito\",\n"
-	  		+ "    \"isbn\": \"BBB\",\n"
-	  		+ "    \"aisle\": \"5555\",\n"
-	  		+ "    \"author\":\"Antoine de Saint-Exupéry\"\n"
-	  		+ "}")
+	  .body(Payloads.addBookRandom())
 	  .when().post("Library/Addbook.php")
 	  
 	  // RESPONSE
