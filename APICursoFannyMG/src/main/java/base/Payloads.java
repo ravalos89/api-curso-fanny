@@ -14,7 +14,7 @@ public class Payloads {
 	public static String jsonComplexLibrary() {
 		return "{\n"
 				+ "	\"dashboard\":{\n"
-				+ "		\"totalAmount\": 910,\n"
+				+ "		\"totalAmount\": 2330,\n"
 				+ "		\"website\": \"books.com\"\n"
 				+ "	},\n"
 				+ "	\"books\":[\n"
