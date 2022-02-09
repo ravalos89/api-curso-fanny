@@ -11,6 +11,16 @@ public class Payloads {
 				+ "}";
 	}
 	
+	// Overloading
+	public static String addBookRandom(String isbn, String aisle) {
+		return "{\n"
+				+ "    \"name\":\"El principito\",\n"
+				+ "    \"isbn\": \""+isbn+"\",\n"
+				+ "    \"aisle\": \""+aisle+"\",\n"
+				+ "    \"author\":\"Antoine de Saint-Exupéry\"\n"
+				+ "}";
+	}
+	
 	public static String jsonComplexLibrary() {
 		return "{\n"
 				+ "	\"dashboard\":{\n"
