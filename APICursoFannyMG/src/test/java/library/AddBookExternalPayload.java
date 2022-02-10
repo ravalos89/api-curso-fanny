@@ -5,14 +5,12 @@ import static io.restassured.RestAssured.given;
 import java.io.IOException;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import base.Base;
-import base.Payloads;
 import io.restassured.RestAssured;
 
-public class AddBookDataProvider {
+public class AddBookExternalPayload {
 	private final String BASE = "baseLibraryURL";
 	private final String KEY_CONTENT_TYPE = "keyContentType";
 	private final String VALUE_CONTENT_TYPE = "valueContentTypeAppJson";
@@ -22,9 +20,10 @@ public class AddBookDataProvider {
 	private final String JSON_MESSAGES_SUCCESSFULLY = "successfullyMsg";
 	private final String JSON_STATUS_CODES = "statusCodes";
 	private final String JSON_STATUS_CODES_SUCCESS = "Success";
+	private final String ADD_BOOK_JSON_PATH = "/Users/ricardoavalos/git/repository3/APICursoFannyMG/src/test/resources/payloads/AddBook.json";
 	
-  @Test(dataProvider = "bookData")
-  public void addBook(String isbn, String aisle) throws IOException {
+  @Test
+  public void addBook() throws IOException {
 	  	  
 	  // ENDPOINT
 	  RestAssured.baseURI=Base.getPropertiesValues(BASE);
@@ -32,7 +31,7 @@ public class AddBookDataProvider {
 	  // REQUEST
 	  String response = given().header(Base.getPropertiesValues(KEY_CONTENT_TYPE), 
 			  Base.getPropertiesValues(VALUE_CONTENT_TYPE))
-	  .body(Payloads.addBookRandom(isbn, aisle))
+	  .body(Base.getStringFromExternalJson(ADD_BOOK_JSON_PATH)) // GET EXTERNAL PAYLOAD
 	  .when().post(Base.getPropertiesValues(RESOURCE))	  
 	  // RESPONSE
 	  .then()
@@ -45,11 +44,5 @@ public class AddBookDataProvider {
 	  Assert.assertEquals(Base.getValueFromJson(response, Base.getJSONData(JSON_MESSAGES_RESPONSE, JSON_MESSAGES_VALUE)), 
 			  Base.getJSONData(JSON_MESSAGES_RESPONSE, JSON_MESSAGES_SUCCESSFULLY));
   }
-  
-  @DataProvider()
-  public Object[][] bookData(){
-	  String random = "AAA";
-	  String randomNumber = "12345";
-	  return new Object[][] {{random, randomNumber}, {random, randomNumber}, {random, randomNumber}};
-  }
+
 }
