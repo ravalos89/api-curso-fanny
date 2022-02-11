@@ -8,6 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
@@ -15,6 +20,8 @@ import org.testng.Assert;
 import io.restassured.path.json.JsonPath;
 
 public class Base {
+	
+	public static final String PATH_EXCEL_DATA = "./src/test/resources/excel/";
 	
 	/*
 	 * Random Number
@@ -102,6 +109,32 @@ public class Base {
 	public static String getStringFromExternalJson(String jsonPath) throws IOException {
 		String pathString = new String(Files.readAllBytes(Paths.get(jsonPath)));
 		return pathString;
+	}
+	
+	/*
+	 * Get Value from Excel
+	 * @author Ricardo Avalos 
+	 * @date 02/18/2019
+	 */
+	public static String getCellData(String excelName, int row, int column) {
+		try {
+			// Reading Data
+			FileInputStream fis = new FileInputStream(PATH_EXCEL_DATA+excelName+".xlsx");
+			// Constructs an XSSFWorkbook object
+			@SuppressWarnings("resource")
+			Workbook wb = new XSSFWorkbook(fis);
+			Sheet sheet = wb.getSheetAt(0);
+			Row rowObj = sheet.getRow(row);
+			Cell cell = rowObj.getCell(column);
+			String value = cell.getStringCellValue();
+			return value;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return null;
+		}
 	}
 
 }

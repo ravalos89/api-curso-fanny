@@ -61,6 +61,13 @@
 			<artifactId>json</artifactId>
 			<version>20170516</version>
 		</dependency>
+		
+		<!-- Apache Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
 
 	</dependencies>
 	
