@@ -43,7 +43,7 @@ public class ListScenarios {
 	  
 	  // Extract ID Board
 	  JsonPath jp = new JsonPath(responseMembers);
-	  String idBoard = jp.getString("array.id");
+	  String idBoard = jp.getString("[0].id");
 	  
 	  // API request - Get lists information from board
 	  String responseGetLists = given()
