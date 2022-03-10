@@ -1,17 +1,15 @@
 package libraryscenarios;
 
-import org.testng.annotations.Test;
-
-import base.Payloads;
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
-
-import org.testng.annotations.BeforeTest;
-
-import static io.restassured.RestAssured.given;
+import java.io.IOException;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import base.SpecBuilders;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 
 public class AddBookScenarios {
 	
@@ -24,7 +22,6 @@ public class AddBookScenarios {
 	 * Deserializacion: En base a un archivo plano se contruye un objeto.
 	 */
 	
-	private String name, isbn, aisle, author;
 	private AddBookRequest addBookReq;
 
   @BeforeTest
@@ -33,34 +30,28 @@ public class AddBookScenarios {
 	  // Serializar body request
 	  addBookReq = new AddBookRequest();
 	  addBookReq.setName("Testing Book Name");
-	  addBookReq.setIsbn("ABDCF");
-	  addBookReq.setAisle("1235");
+	  addBookReq.setIsbn("ABDCG");
+	  addBookReq.setAisle("1246");
 	  addBookReq.setAuthor("Ricardo");
   }
   
   @Test
-  public void tc001ValidateStatusCode200() {
+  public void tc001ValidateStatusCode200() throws IOException {
 	  
-	// ENDPOINT
-	  RestAssured.baseURI="http://216.10.245.166";
+	Response addBookResponse = SpecBuilders.addBookSpecBuilder(addBookReq);
+	Assert.assertEquals(addBookResponse.getStatusCode(), 200);
 		  
-	  // Serializacion
-	 AddBookResponse addBookResponse = given().header("Content-Type", "application/json")
-	  .body(addBookReq)
-	  .log().all()
-	  .expect().defaultParser(Parser.JSON)
-	  .when()
-	  .post("Library/Addbook.php")
-	  .as(AddBookResponse.class);
-	 
-	 // Deserializcion
-	 System.out.println(addBookResponse.getId());
-	 System.out.println(addBookResponse.getMsg());
-	 
-	 Assert.assertNotNull(addBookResponse.getId());
-	 
-	 
-		  
+  }
+  
+  @Test
+  public void tc002VerifyFromPayloadResponse() throws IOException {
+	  
+	  Response addBookResponse = SpecBuilders.addBookSpecBuilder(addBookReq);
+	  
+	  ResponseBody<?> responseBook = addBookResponse.getBody();
+	  String expectedID = addBookReq.getIsbn() + addBookReq.getAisle();
+	  Assert.assertEquals(responseBook.jsonPath().getString("ID"), expectedID);
+	  
   }
 
   @AfterTest
